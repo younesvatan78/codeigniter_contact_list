@@ -32,8 +32,8 @@
 		<!---- Font awesom link local ----->
 </head>
 <body>
-<div class="col-md-5">
- 				 		<?= form_open(); ?>
+				<div class="col-md-5">
+ 				 	<?= form_open('test/login'); ?>
 						<fieldset>							
 							<p class="text-uppercase"> Login using your account: </p>	
  								
@@ -48,7 +48,8 @@
 							</div>
 								 
  						</fieldset>
-				</form>	
+					</form>	
 				</div>
+				
 </body>
 </html>

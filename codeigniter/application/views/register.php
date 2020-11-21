@@ -53,7 +53,7 @@
 				
 				<?php echo validation_errors(); ?>
 				
-				<?= form_open() ?>
+				<?= form_open('test/register') ?>
 						<fieldset>					
 						<?php echo $this->session->flashdata('usernameerror');
 							  echo $this->session->flashdata('success');

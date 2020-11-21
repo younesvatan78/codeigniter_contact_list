@@ -92,9 +92,106 @@ class Test extends CI_Controller
         
     }
 
-    public function contact_list(){
-        $this->load->view('contact_list');
+   public function add_contact(){
+    $this->load->helper('form');
+    $this->load->library('form_validation');
+    
+    
+    $this->form_validation->set_rules('firstname','Firstname','required');
+    $this->form_validation->set_rules('lastname','Lastname','required');
+    $this->form_validation->set_rules('phone','Lastname','required|numeric');
+
+    if($this->form_validation->run() == false){
+        $this->load->view('login_success');
     }
+    else{
+        $firstname = $this->input->post('firstname');
+        $lastname = $this->input->post('lastname');
+        $phone = $this->input->post('phone');
+        $user = $this->session->userdata('username');
+
+        if($this->user_model->check_dup_contact($phone,$user)){
+            echo '<script> alert("phone number is in database with another name "); </script>';
+            $this->load->view('login_success');
+        }
+        else{
+            $this->user_model->add_contact($firstname,$lastname,$phone,$user);
+            echo '<script> alert("contact saved!"); </script>';
+            $this->load->view('login_success');
+
+
+
+           
+        }
+    }
+
+
+   }
+
+   public function list_contacts(){
+       $this->user_model->get_user_contacts($user);
+   }
+
+   public function update_contact(){
+    $this->load->helper('form');
+    $this->load->library('form_validation');
+    
+    
+    $this->form_validation->set_rules('firstname_edit','Firstname','required');
+    $this->form_validation->set_rules('lastname_edit','Lastname','required');
+    $this->form_validation->set_rules('phone_edit','Lastname','required|numeric');
+    $this->form_validation->set_rules('id_edit','Lastname','required|numeric');
+
+    if($this->form_validation->run() == false){
+        $this->load->view('login_success');
+    }
+    else{
+        $firstname = $this->input->post('firstname_edit');
+        $lastname = $this->input->post('lastname_edit');
+        $phone = $this->input->post('phone_edit');
+        $id = $this->input->post('id_edit');
+        $user = $this->session->userdata('username');
+
+        if($this->user_model->check_dup_contact_by_id($id,$user)){
+            $this->user_model->update_contact($user,$firstname,$lastname,$phone,$id);
+            echo '<script> alert("contact updated successfully!"); </script>';
+            $this->load->view('login_success');
+
+        }
+        else{
+            echo '<script> alert("no contact is available with id you provided!"); </script>';
+            $this->load->view('login_success');
+        }
+
+
+
+    }
+
+
+   }
+   public function delete_contact(){
+    $this->load->helper('form');
+    $this->load->library('form_validation');
+
+    $this->form_validation->set_rules('id_del','ID_del','required|numeric');
+
+    if($this->form_validation->run() == false){
+        $this->load->view('login_success');
+    }
+    else{
+        $user = $this->session->userdata('username');
+        $id = $this->input->post('id_del');
+
+        if($this->user_model->check_dup_contact_by_id($id,$user)){
+            $this->user_model->delete_contact($id,$user);
+            $this->load->view('login_success');
+        }
+        else{
+            echo '<script> alert("no contact is available with id you provided!"); </script>';
+            $this->load->view('login_success');
+        }
+    }
+   }
 
 
 

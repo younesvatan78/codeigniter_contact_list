@@ -9,7 +9,7 @@
 
 <p><?php echo anchor('test/register', 'Back to register page'); ?></p>
 <p><?php echo anchor('test/login', 'Go to login page'); ?></p>
-<p><?php echo anchor('test/contact_list', 'Go to contact list page'); ?></p>
+
 
 </body>
 </html>
