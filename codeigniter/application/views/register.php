@@ -1,93 +1,67 @@
 
-
-
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
-<!---*************welcome this is my simple empty strap by John Niro Yumang ******************* -->
-
 <!DOCTYPE html>
 <html lang="en">
 
-	<title>Sign up facundo farm & resort</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form by Colorlib</title>
 
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/fonts/material-icon/css/material-design-iconic-font.min.css">
 
-	<head>
-		<script src="jquery/jquery.min.js"></script>
-		<!---- jquery link local dont forget to place this in first than other script or link or may not work ---->
-		
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<!---- boostrap.min link local ----->
-		
-		<link rel="stylesheet" href="css/style.css">
-		<!---- boostrap.min link local ----->
+    <!-- Main css -->
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/style.css">
+</head>
 
-		<script src="js/bootstrap.min.js"></script>
-		<!---- Boostrap js link local ----->
-		
-		<link rel="icon" href="images/icon.png" type="image/x-icon" />
-		<!---- Icon link local ----->
-        <style type="text/css">
-            body {background-color:#eee;}
-            .container-fluid {padding:50px;}
-            .container{background-color:white;padding:50px;   }
-            #title{font-family: 'Lobster', cursive;;}
-        </style>
-	<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
-		<!---- Font awesom link local ----->
-	</head>
-	<body>
-	<div class="container-fluid">
-		<div class="container">
-			<h2 class="text-center" id="title">Facundo farm and Resort</h2>
-			 <p class="text-center">
-				<small id="passwordHelpInline" class="text-muted"> Developer: follow me on facebook <a href="https://www.facebook.com/JheanYu"> John niro yumang</a> inspired from <a href="https://p.w3layouts.com/">https://p.w3layouts.com/</a>.</small>
-			</p>
- 			<hr>
-			<div class="row">
-				<div class="col-md-5">
-				
-				<?php echo validation_errors(); ?>
-				
-				<?= form_open('test/register') ?>
-						<fieldset>					
-						<?php echo $this->session->flashdata('usernameerror');
-							  echo $this->session->flashdata('success');
-						?>		
-							<p class="text-uppercase pull-center"> SIGN UP.</p>	
- 							<div class="form-group">
-								<input type="text" name="username" id="username" class="form-control input-lg" placeholder="username">
-							</div>
+<body>
 
-							
-							<div class="form-group">
-								<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
-							</div>
-								
- 							<div>
- 									  <input type="submit" name="register" class="btn btn-lg btn-primary   value="Register">
- 							</div>
-						</fieldset>
-					</form>
-				</div>
+    <div class="main">
+
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+						<?php echo validation_errors(); ?>
 				
-				<div class="col-md-2">
-					<!-------null------>
-				</div>
-				
-				
-				
-			</div>
-		</div>
-		<p class="text-center">
-			<small id="passwordHelpInline" class="text-muted"> Developer:<a href="http://www.psau.edu.ph/"> Pampanga state agricultural university ?</a> BS. Information and technology students @2017 Credits: <a href="https://v4-alpha.getbootstrap.com/">boostrap v4.</a></small>
-		</p>
-	</div>
-	</body>
-	 
+						<?= form_open('test/register') ?>
+						    <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" id="name" placeholder="Username" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="pass" placeholder="Password" />
+                            </div>
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password" />
+                            </div>
+
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="signup-image">
+						<figure><img src="<?= base_url(); ?>assets/images/signup-image.jpg" alt="sing up image"></figure>
+						<p><?php echo anchor('test/login', 'I am already member',array('class'=>'signup-image-link')); ?></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+    </div>
+
+    <!-- JS -->
+    <script src="<?= base_url(); ?>assets/vendor/jquery/jquery.min.js"></script>
+    <script src="<?= base_url(); ?>assets/js/main.js"></script>
+</body>
+<!-- This templates was made by Colorlib (https://colorlib.com) -->
 
 </html>

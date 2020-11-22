@@ -24,8 +24,11 @@ class Test extends CI_Controller
         $this->load->helper('form');
         $this->load->library('form_validation');
 
-        $this->form_validation->set_rules('username','Username','trim|required|is_unique[users.username]',array('is_unique' =>'This username already exists. Please choose another one.'));
+        $this->form_validation->set_rules('username','Username','trim|required|min_length[3]|max_length[14]|is_unique[users.username]',array('is_unique' =>'This username already exists. Please choose another one.'));
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
+        
+        $this->form_validation->set_rules('re_pass', 'Confirm password', 'trim|required|min_length[6]|matches[password]',array('matches'=>'Confirm password and password field does not match'));
+
 
 
 
@@ -42,7 +45,10 @@ class Test extends CI_Controller
             $data->username = $username;
             
             if($this->user_model->signup($username,$password)){
-                $this->load->view('sucess',$data);
+                echo '<script> alert("You signed up successfully!"); </script>';
+                sleep(3);
+                $this->load->view('login',$data);
+
             }
             else{
                 $data->error = 'There was a problem creating your new account. Please try again.';
@@ -57,6 +63,8 @@ class Test extends CI_Controller
     public function login(){
         $data = new stdClass();
         $this->load->helper('form');
+        $this->load->helper('url'); 
+
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('username_login','Username login','required');
@@ -100,6 +108,8 @@ class Test extends CI_Controller
     $this->form_validation->set_rules('firstname','Firstname','required');
     $this->form_validation->set_rules('lastname','Lastname','required');
     $this->form_validation->set_rules('phone','Lastname','required|numeric');
+    $this->form_validation->set_rules('email','Email');
+
 
     if($this->form_validation->run() == false){
         $this->load->view('login_success');
@@ -109,13 +119,14 @@ class Test extends CI_Controller
         $lastname = $this->input->post('lastname');
         $phone = $this->input->post('phone');
         $user = $this->session->userdata('username');
+        $email = $this->input->post('email');
 
         if($this->user_model->check_dup_contact($phone,$user)){
             echo '<script> alert("phone number is in database with another name "); </script>';
             $this->load->view('login_success');
         }
         else{
-            $this->user_model->add_contact($firstname,$lastname,$phone,$user);
+            $this->user_model->add_contact($firstname,$lastname,$phone,$user,$email);
             echo '<script> alert("contact saved!"); </script>';
             $this->load->view('login_success');
 
@@ -129,7 +140,13 @@ class Test extends CI_Controller
    }
 
    public function list_contacts(){
-       $this->user_model->get_user_contacts($user);
+    $user = $this->session->userdata('username');
+    $loggedin = $this->session->userdata('logged_in');
+    if($loggedin){
+        $this->user_model->list_contacts($user);
+
+    }
+       $this->load->view('login_success');
    }
 
    public function update_contact(){
@@ -154,8 +171,8 @@ class Test extends CI_Controller
 
         if($this->user_model->check_dup_contact_by_id($id,$user)){
             $this->user_model->update_contact($user,$firstname,$lastname,$phone,$id);
-            echo '<script> alert("contact updated successfully!"); </script>';
-            $this->load->view('login_success');
+            redirect('/test/list_contacts');
+            
 
         }
         else{
@@ -184,11 +201,11 @@ class Test extends CI_Controller
 
         if($this->user_model->check_dup_contact_by_id($id,$user)){
             $this->user_model->delete_contact($id,$user);
-            $this->load->view('login_success');
+            redirect('/test/list_contacts');
         }
         else{
             echo '<script> alert("no contact is available with id you provided!"); </script>';
-            $this->load->view('login_success');
+            redirect('/test/list_contacts');
         }
     }
    }
