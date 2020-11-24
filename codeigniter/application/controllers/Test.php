@@ -29,8 +29,7 @@ class Test extends CI_Controller
         
         $this->form_validation->set_rules('re_pass', 'Confirm password', 'trim|required|min_length[6]|matches[password]',array('matches'=>'Confirm password and password field does not match'));
 
-
-
+       
 
 
 
@@ -100,7 +99,16 @@ class Test extends CI_Controller
         
     }
 
+
+
+   
+
+
+
    public function add_contact(){
+    $user = $this->session->userdata('username');
+    if(!isset($user)):$this->load->view('403'); return; endif;
+
     $this->load->helper('form');
     $this->load->library('form_validation');
     
@@ -110,37 +118,74 @@ class Test extends CI_Controller
     $this->form_validation->set_rules('phone','Lastname','required|numeric');
     $this->form_validation->set_rules('email','Email');
 
+    
+
+    
+   
+
 
     if($this->form_validation->run() == false){
         $this->load->view('login_success');
+        
     }
     else{
         $firstname = $this->input->post('firstname');
         $lastname = $this->input->post('lastname');
         $phone = $this->input->post('phone');
-        $user = $this->session->userdata('username');
         $email = $this->input->post('email');
+
+
+        $config['upload_path']          = './upload/'.$user.'';
+        $config['allowed_types']        = 'gif|jpg|png';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $config['file_name']            = $firstname.' '.$lastname;
+        $this->load->library('upload', $config);
+        
+        $dir_exits = false;
+            if(!is_dir('./upload/'. $user)){
+                mkdir('./upload/' . $user,0777,true);
+                $dir_exits = true;
+            }
+
+        if(!$this->upload->do_upload('userfile')){
+            $error = array('error'=>$this->upload->display_errors());
+            if(!$dir_exist):
+            rmdir('./upload/' . $user); endif;
+            $this->load->view('login',$error);
+        }
+        else{
+            $pic = $this->upload->data('file_name');
+            $pic_url_combine = base_url().'upload/'.$user.'/'.$pic;
+            $pic_url = $this->session->set_userdata(array(
+                'pic_url' => $pic_url_combine
+            ));
+            //$data = array('pic_url' =>$pic_url);
+           
+            
+        }
 
         if($this->user_model->check_dup_contact($phone,$user)){
             echo '<script> alert("phone number is in database with another name "); </script>';
             $this->load->view('login_success');
         }
         else{
-            $this->user_model->add_contact($firstname,$lastname,$phone,$user,$email);
+            $this->user_model->add_contact($firstname,$lastname,$phone,$user,$email,$pic);
             echo '<script> alert("contact saved!"); </script>';
-            $this->load->view('login_success');
 
-
-
+            redirect('test/list_contacts',$data);
            
         }
     }
-
 
    }
 
    public function list_contacts(){
     $user = $this->session->userdata('username');
+
+    if(!isset($user)):$this->load->view('403'); return; endif;
+
     $loggedin = $this->session->userdata('logged_in');
     if($loggedin){
         $this->user_model->list_contacts($user);
@@ -150,9 +195,12 @@ class Test extends CI_Controller
    }
 
    public function update_contact(){
-    $this->load->helper('form');
-    $this->load->library('form_validation');
-    
+       $user = $this->session->userdata('username');
+       if(!isset($user)):$this->load->view('403'); return; endif;
+
+       $this->load->helper('form');
+       $this->load->library('form_validation');
+       
     
     $this->form_validation->set_rules('firstname_edit','Firstname','required');
     $this->form_validation->set_rules('lastname_edit','Lastname','required');
@@ -167,7 +215,7 @@ class Test extends CI_Controller
         $lastname = $this->input->post('lastname_edit');
         $phone = $this->input->post('phone_edit');
         $id = $this->input->post('id_edit');
-        $user = $this->session->userdata('username');
+        
 
         if($this->user_model->check_dup_contact_by_id($id,$user)){
             $this->user_model->update_contact($user,$firstname,$lastname,$phone,$id);
@@ -187,6 +235,8 @@ class Test extends CI_Controller
 
    }
    public function delete_contact(){
+    $user = $this->session->userdata('username');
+    if(!isset($user)):$this->load->view('403'); return; endif;
     $this->load->helper('form');
     $this->load->library('form_validation');
 
@@ -196,7 +246,7 @@ class Test extends CI_Controller
         $this->load->view('login_success');
     }
     else{
-        $user = $this->session->userdata('username');
+        
         $id = $this->input->post('id_del');
 
         if($this->user_model->check_dup_contact_by_id($id,$user)){
@@ -208,6 +258,11 @@ class Test extends CI_Controller
             redirect('/test/list_contacts');
         }
     }
+   }
+
+   public function logout(){
+       $this->session->sess_destroy();
+       redirect('test/login');
    }
 
 

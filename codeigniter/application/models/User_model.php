@@ -67,14 +67,15 @@ class User_model extends CI_Model{
                 return true;
             }
     }
-    public function add_contact($firstname,$lastname,$phone,$user,$email){
+    public function add_contact($firstname,$lastname,$phone,$user,$email,$pic){
        
        return $this->db->insert('contacts',array(
             'firstname' =>$firstname,
             'lastname' =>$lastname,
             'mobile'=>$phone,
             'user'=>$user,
-            'email' =>$email
+            'email' =>$email,
+            'url' =>$pic
         ));
     }
     
