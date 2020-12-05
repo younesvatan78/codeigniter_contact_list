@@ -30,11 +30,11 @@
 	
 	<!-- contacts card -->
 	
-	<div style="display:none">
+	<div id="contact_show" style="display:none">
 
 		<h3>Add contact</h3>
 		<?= form_open_multipart('test/add_contact'); ?>
-		<fieldset>
+		<fieldset >
 			<label for="firstname">First Name</label>
 			<input type="text" name="firstname">
 			
@@ -59,28 +59,30 @@
 		</form>
 	</div>
 
+	<!-- Edit contact -->
 	<div style="display:none">
 		
 		<?= form_open('test/update_contact'); ?>
-		<fieldset>
-		<label for="id_edit">ID</label>
-				<input type="number" name="id_edit">
+			<fieldset>
+				<label for="id_edit">ID</label>
+						<input type="number" name="id_edit">
 
-			<label for="firstname_edit">First Name</label>
-				<input type="text" name="firstname_edit">
+					<label for="firstname_edit">First Name</label>
+						<input type="text" name="firstname_edit">
 
-			<label for="lastname_edit">Last name</label>
-				<input type="text" name="lastname_edit">
-				
+					<label for="lastname_edit">Last name</label>
+						<input type="text" name="lastname_edit">
 
-			<label for="phone_edit">Phone number</label>
-				<input type="tel" name="phone_edit">
-				
-				<input type="submit" value="Update Contact">
-		</fieldset>
+
+					<label for="phone_edit">Phone number</label>
+						<input type="tel" name="phone_edit">
+
+						<input type="submit" onclick="update_contact()" value="Update Contact">
+			</fieldset>
 		</form>
 	</div>	
 	
+	<!-- Delete Contact -->
 	<div style="display:none">
 		<h3>Delete contact</h3>
 		<?= form_open('test/delete_contact'); ?>
@@ -158,8 +160,12 @@
 
 
 			<ul class="list-group pull-down" id="contact-list" ">
-				<?php foreach($this->user_model->list_contacts($this->session->userdata('username')) as $contact){?>
-
+				<?php
+				$count=0;
+				foreach($this->user_model->list_contacts($this->session->userdata('username')) as $contact)
+				{
+				$count= $count + 1;
+?>
 					<li class="list-group-item">
 						<div class="row w-100">
 							<div class="col-12 col-sm-6 col-md-3 px-0">
@@ -168,7 +174,7 @@
 
 
 
-							<div id="update-contact" style="display:none;">
+							<div id="update-contact-<?php echo $count; ?>" style="display:none;">
 
 
 								<?= form_open('test/update_contact'); ?>
@@ -192,6 +198,7 @@
 										    <input type="tel" style="width:35%!important;" class="margin-input 	form-control form-control-sm" id="colFormLabelSm name="phone_edit" 	placeholder="Phone">
 										</div>
 									</div>
+									<input type="submit" class="btn btn-success" value="Update">
 								</form>
 
 
@@ -201,9 +208,10 @@
 
 
 
-							<div style="display:none; class="col-12 col-sm-6 col-md-9 text-center text-sm-left" >
-								<span class="fa fa-mobile fa-2x text-success float-right pulse" title="online 	now"></span>
-								<label class="name lead"><?php echo $contact->firstname.' '.$contact->lastname ?></	label>
+							<div class="col-12 col-sm-6 col-md-9 text-center text-sm-left" >
+								<span class="fa fa-mobile fa-2x text-success float-right pulse" title="online 	now">
+								</span>
+								<label class="name lead"><?php echo $contact->firstname.' '.$contact->lastname ?></label>
 								<br>
 								<span class="fa fa-phone fa-fw text-muted" data-toggle="tooltip" title="" 	data-original-title="<?= $contact->mobile ?>"></span>
 								<span class="text-muted small"><?= $contact->mobile ?></span>
@@ -214,7 +222,7 @@
 							
 						</div>
 						<button type="button" class="btn btn-danger float-right vertical-center">Delete</button>
-						<button type="button" class="btn btn-success float-right vertical-center" style="right:100px!important;" onclick="update_contact()">Edit</button>
+						<button type="button" id="edit_<?=$count?>" class="btn btn-success float-right vertical-center" style="right:100px!important;">Edit</button>
 					</li>
 				<?php } ?>
 

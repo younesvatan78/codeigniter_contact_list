@@ -11,6 +11,13 @@
         $(this).addClass('active');
     })
 
+    var count_max = document.getElementById('contact-list').getElementsByTagName('li').length
+
+
+    $('#edit_' + foo).click(function() {
+        console.log(foo);
+        $('#update-contact-' + (foo)).css({ display: "block" })
+    })
 
 
 })(jQuery);
@@ -28,6 +35,8 @@ function add_contact() {
 
 }
 
+
+
 function update_contact() {
-    document.getElementById('update-contact').style.display = 'block';
+    document.getElementById('contact_show').style.display = 'block';
 }
