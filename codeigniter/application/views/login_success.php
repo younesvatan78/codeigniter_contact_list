@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="Codeply">
-  <title>Codeply simple HTML/CSS/JS preview</title>
+  <title>Contact form</title>
   <base target="_self"> 
 
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">  
@@ -20,107 +20,14 @@
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/sidebar.css"></link>
 </head>
 
-<body>
-	
-
-
-	
-
-
-	
-	<!-- contacts card -->
-	
-	<div id="contact_show" style="display:none">
-
-		<h3>Add contact</h3>
-		<?= form_open_multipart('test/add_contact'); ?>
-		<fieldset >
-			<label for="firstname">First Name</label>
-			<input type="text" name="firstname">
-			
-			<label for="lastname">Last name</label>
-			<input type="text" name="lastname">
-			
-			<label for="phone">Phone number</label>
-			<input type="tel" name="phone">
-			
-			<label for="userfile">Upload pic</label>
-			<input type="file" name="userfile" size="20" />
-			
-		
-			<label for="phone">email</label>
-				<input type="email" name="email">
-
-				
-
-				
-				<input type="submit" value="Add Contact">
-		</fieldset>
-		</form>
-	</div>
-
-	<!-- Edit contact -->
-	<div style="display:none">
-		
-		<?= form_open('test/update_contact'); ?>
-			<fieldset>
-				<label for="id_edit">ID</label>
-						<input type="number" name="id_edit">
-
-					<label for="firstname_edit">First Name</label>
-						<input type="text" name="firstname_edit">
-
-					<label for="lastname_edit">Last name</label>
-						<input type="text" name="lastname_edit">
-
-
-					<label for="phone_edit">Phone number</label>
-						<input type="tel" name="phone_edit">
-
-						<input type="submit" onclick="update_contact()" value="Update Contact">
-			</fieldset>
-		</form>
-	</div>	
-	
-	<!-- Delete Contact -->
-	<div style="display:none">
-		<h3>Delete contact</h3>
-		<?= form_open('test/delete_contact'); ?>
-		<fieldset>
-		<label for="id_del">ID</label>
-				<input type="number" name="id_del">
-
-			
-				<input type="submit" value="Delete Contact">
-		</fieldset>
-		</form>
-	</div>
-	<?= form_open('test/logout'); ?>
-				<input type="submit" value="Log out">
-	</form>
-
-	
-
-
-
-	</div>
-	
-</body>
-
-
-
-
-
-
-
 
 
 <body>
+<div class="d-flex" style="height: 100%;" >
 
-    <div class="wrapper d-flex align-items-stretch">
-        <nav id="sidebar">
+<nav id="sidebar">
             
-            <div class="p-4 pt-5">
+            <div style="height:100%;" class="p-4 pt-5">
                 <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(images/logo.jpg);"></a>
                 <ul class="list-unstyled components mb-5">
                     <li  class="active">
@@ -129,86 +36,83 @@
                     <li ">
                         <a href="#" onclick="add_contact()">Add contact</a>
                     </li>
-                    
-                    <li >
-                        <a href="#" >Portfolio</a>
-                    </li>
                     <li id="items-nav">
-                        <a href="#">Contact</a>
+					    <?= form_open('test/logout'); ?>
+				            <input type="submit" style="margin-top:20px;" class="btn btn-danger" value="Log out">
+	                    </form>
                     </li>
                 </ul>
 
-                <div class="footer">
-                    <p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </p>
-                </div>
-
+               
             </div>
 		</nav>
+
+    <div class="wrapper d-flex align-items-stretch">
+        
+
+
+
+
 		
 
         <!-- Page Content  -->
         <div id="list-contact" class="p-4 p-md-5">
-
-
-
-
 			<ul class="list-group pull-down" id="contact-list" ">
 				<?php
 				$count=0;
 				foreach($this->user_model->list_contacts($this->session->userdata('username')) as $contact)
 				{
-				$count= $count + 1;
-?>
+				$count= $count + 1;?>
+
 					<li class="list-group-item">
 						<div class="row w-100">
 							<div class="col-12 col-sm-6 col-md-3 px-0">
 								<img src="<?= base_url().'upload/'.$contact->user.'/'.$contact->url ?>" 	class="rounded-circle mx-auto d-block img-fluid">
 							</div>
 
-
-
-							<div id="update-contact-<?php echo $count; ?>" style="display:none;">
+							<!-- Edit contact -->
+	
+							<div id="update-contact-person_<?php echo $count; ?>" style="display:none;">
 
 
 								<?= form_open('test/update_contact'); ?>
 
-									<div class="form-group row">
+									<div class="form-group row" style="width: 27em" >
 
 										<div class="col-sm-10">
-										    <input type="text" style="width:35%!important;" class="form-control 	form-control-sm" id="colFormLabelSm name="firstname_edit" 	placeholder="First Name" value="">
+										    <input type="text"  class="form-control 	form-control-sm" name="firstname_edit" 	placeholder="First Name" value="<?=$contact->firstname?>">
 										</div>
 
 										<div class="col-sm-10">
-										    <input type="text" style="width:35%!important;" class="margin-input 	form-control form-control-sm" id="colFormLabelSm name="lastname_edit" 	placeholder="Last Name">
+										    <input type="text"  class="margin-input	form-control form-control-sm" name="lastname_edit" value="<?=$contact->lastname?>"	placeholder="Last Name">
 										</div>
-
-										<div class="col-sm-10">
-
-										    <input type="text" style="width:35%!important;" class="margin-input 	form-control form-control-sm" id="colFormLabelSm name="email_edit" 	placeholder="Email">
-										</div>
-
+										
 										<div class="col-sm-10">										
-										    <input type="tel" style="width:35%!important;" class="margin-input 	form-control form-control-sm" id="colFormLabelSm name="phone_edit" 	placeholder="Phone">
+										    <input type="tel"  class="margin-input 	form-control form-control-sm" id="colFormLabelSm" name="phone_edit" 	placeholder="Phone" value="<?=$contact->mobile?>">
 										</div>
+										<div class="col-sm-10">
+
+										    <input type="text"  class="margin-input 	form-control form-control-sm" id="colFormLabelSm" name="email_edit" placeholder="Email" value="<?=$contact->email?>">
+										</div>
+
+										<!--
+										<div class="form-group">
+				  							<div class="custom-file">
+					  							<input type="file" name="userfile_edit" class="custom-file-input" id="customFile">
+					  							<label class="custom-file-label" for="userfile_edit">Select a photo for contact</label>
+  				  							</div>
+  										</div>
+										  -->
+										<input type="hidden" name="contact_id" value="<?=$contact->id?>">
 									</div>
 									<input type="submit" class="btn btn-success" value="Update">
 								</form>
-
-
-									
 									
 							</div>
 
 
 
-							<div class="col-12 col-sm-6 col-md-9 text-center text-sm-left" >
+							<div id="contact_info_list_person_<?=$count?>" class="col-12 col-sm-6 col-md-9 text-center text-sm-left" >
 								<span class="fa fa-mobile fa-2x text-success float-right pulse" title="online 	now">
 								</span>
 								<label class="name lead"><?php echo $contact->firstname.' '.$contact->lastname ?></label>
@@ -218,11 +122,16 @@
 								<br>
 								<span class="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" 	data-original-title="" title=""></span>
 								<span class="text-muted small text-truncate"><?= $contact->email ?></span>
+								
 							</div>
 							
 						</div>
-						<button type="button" class="btn btn-danger float-right vertical-center">Delete</button>
-						<button type="button" id="edit_<?=$count?>" class="btn btn-success float-right vertical-center" style="right:100px!important;">Edit</button>
+						<?= form_open('test/delete_contact'); ?>
+						<input type="hidden" name="contact_id_delete" value="<?=$contact->id?>">
+						<input type="submit" class="btn btn-danger float-right vertical-center" value="Delete">
+						</form>
+
+						<button type="button" id="person_<?=$count?>" onclick="edit_button(this.id)" class="btn btn-success float-right vertical-center" style="right:100px!important;">Edit</button>
 					</li>
 				<?php } ?>
 
@@ -234,7 +143,7 @@
   				<div class="form-row">
 				  <div class="col-md-4 mb-3">
       					<label for="validationServer01">First name</label>
-						  <input type="text" name="firstname" class="form-control" id="validationServer01" placeholder="First name" value="<?php echo $contact->firstname ?>">
+						  <input type="text" name="firstname" class="form-control" id="validationServer01" placeholder="First name">
 						  
 					</div>
 					
@@ -269,6 +178,7 @@
 
 
     </div>
+	</div>
 
 	<script src="<?= base_url(); ?>assets/js/jquery.min.js"></script>
     <script src="<?= base_url(); ?>assets/js/popper.js"></script>

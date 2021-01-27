@@ -14,17 +14,33 @@
     var count_max = document.getElementById('contact-list').getElementsByTagName('li').length
 
 
-    $('#edit_' + foo).click(function() {
-        console.log(foo);
-        $('#update-contact-' + (foo)).css({ display: "block" })
+    $('#edit_' + 1).click(function() {
+
+        $('#update-contact-' + 1).css({ display: "block" })
     })
 
 
 })(jQuery);
 
+function edit_button(clicked_id) {
+    if (document.getElementById('update-contact-' + clicked_id).style.display !== 'block') {
+
+        document.getElementById('update-contact-' + clicked_id).style.display = 'block';
+        document.getElementById('contact_info_list_' + clicked_id).style.display = 'none';
+
+        document.getElementById(clicked_id).innerHTML = 'Close';
+    } else {
+        document.getElementById('update-contact-' + clicked_id).style.display = 'none';
+        document.getElementById('contact_info_list_' + clicked_id).style.display = 'block';
+        document.getElementById(clicked_id).innerHTML = 'Edit';
+
+    }
+
+}
 
 function display_contact() {
     document.getElementById('list-contact').style.display = 'block';
+
     document.getElementById('add_content').style.display = 'none';
 
 }

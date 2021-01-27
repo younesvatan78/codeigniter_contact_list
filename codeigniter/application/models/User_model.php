@@ -86,23 +86,26 @@ class User_model extends CI_Model{
         return $query->result();
     }
 
-    public function update_contact($user,$firstname,$lastname,$phone,$id){
+    public function update_contact($user,$firstname,$lastname,$phone,$id,$email){
         $this->db->where('id',$id);
         $this->db->where('user',$user);
         $this->db->update('contacts', array(
             'firstname' =>$firstname,
             'lastname' =>$lastname,
-            'mobile' =>$phone
+            'mobile' =>$phone,
+            'email' =>$email
         ));
 
 
     }
     public function delete_contact($id,$user){
         
-        return $this->db->delete('contacts',array(
-            'id'=>$id,
-            'user' =>$user
+        $this->db->where('user',$user);
+        $this->db->where('id',$id);
+        $this->db->delete('contacts',array(
+            'firstname'
         ));
+        
     }
 
 
